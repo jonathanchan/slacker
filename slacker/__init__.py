@@ -323,6 +323,22 @@ class Users(BaseAPI):
     def admin(self):
         return self._admin
 
+    def conversations(self, cursor=None, exclude_archived=None, limit=None,
+                      types=None, user=None):
+        if isinstance(types, (list, tuple)):
+            types = ','.join(types)
+
+        return self.get(
+           'users.conversations',
+           params={
+               'cursor': cursor,
+               'exclude_archived': exclude_archived,
+               'limit': limit,
+               'types': types,
+               'user': user
+           }
+        )
+
     def info(self, user, include_locale=False):
         return self.get('users.info',
                         params={'user': user, 'include_locale': include_locale})
