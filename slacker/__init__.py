@@ -323,6 +323,9 @@ class Users(BaseAPI):
     def admin(self):
         return self._admin
 
+    def delete_photo(self):
+        return self.get('users.deletePhoto')
+
     def info(self, user, include_locale=False):
         return self.get('users.info',
                         params={'user': user, 'include_locale': include_locale})
@@ -335,6 +338,17 @@ class Users(BaseAPI):
 
     def set_active(self):
         return self.post('users.setActive')
+
+    def set_photo(self, image, crop_w=None, crop_x=None, crop_y=None):
+        if isinstance(image, str):
+            with open(image, 'rb') as f:
+                return self.post('users.setPhoto', files={'image': f},
+                                 params={
+                                    'crop_w': crop_w,
+                                    'crop_x': crop_x,
+                                    'crop_y': crop_y
+                                 }
+                )
 
     def get_presence(self, user):
         return self.get('users.getPresence', params={'user': user})
